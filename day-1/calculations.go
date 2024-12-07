@@ -1,14 +1,11 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"math"
-	"os"
-	"regexp"
 	"sort"
-	"strconv"
-	"strings"
+
+	"github.com/HP/advent-of-code-2024/utils"
 )
 
 func totalDistance(left, right []int) int {
@@ -47,51 +44,17 @@ func countOccurrences(slice []int) map[int]int {
 	return counts
 }
 
-func readIntsFromFile(filename string) ([]int, []int, error) {
-	file, err := os.Open(filename)
-	if err != nil {
-		return nil, nil, err
-	}
-	defer file.Close()
-
-	var left, right []int
-	scanner := bufio.NewScanner(file)
-	re := regexp.MustCompile(`\s+`)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if line == "" {
-			continue
-		}
-		values := re.Split(line, -1)
-		if len(values) != 2 {
-			return nil, nil, fmt.Errorf("invalid line format: %s", line)
-		}
-
-		leftValue, err := strconv.Atoi(strings.TrimSpace(values[0]))
-		if err != nil {
-			return nil, nil, fmt.Errorf("invalid integer value: %s", values[0])
-		}
-		rightValue, err := strconv.Atoi(strings.TrimSpace(values[1]))
-		if err != nil {
-			return nil, nil, fmt.Errorf("invalid integer value: %s", values[1])
-		}
-
-		left = append(left, leftValue)
-		right = append(right, rightValue)
-	}
-
-	if err := scanner.Err(); err != nil {
-		return nil, nil, err
-	}
-
-	return left, right, nil
-}
-
 func main() {
-
-	left, right, err := readIntsFromFile("input.txt")
+	ints, err := utils.ReadIntsFromFile("input.txt")
 	if err != nil {
 		panic(err)
+	}
+	left := make([]int, len(ints))
+	right := make([]int, len(ints))
+
+	for i, values := range ints {
+		left[i] = values[0]
+		right[i] = values[1]
 	}
 
 	fmt.Printf("Total distance: %d\n", totalDistance(left, right))
