@@ -89,7 +89,7 @@ func readIntsFromFile(filename string) ([]int, []int, error) {
 
 func main() {
 
-	left, right, err := readIntsFromFile("day1-input.txt")
+	left, right, err := readIntsFromFile("input.txt")
 	if err != nil {
 		panic(err)
 	}
