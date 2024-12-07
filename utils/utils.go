@@ -9,8 +9,17 @@ import (
 	"strings"
 )
 
-func ReadIntsFromFile(filename string) ([][]int, error) {
+func GetFileScanner(filename string) (*bufio.Scanner, *os.File, error) {
 	file, err := os.Open(filename)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return bufio.NewScanner(file), file, nil
+}
+
+func ReadIntsFromFile(filename string) ([][]int, error) {
+	scanner, file, err := GetFileScanner(filename)
 	if err != nil {
 		return nil, err
 	}
@@ -18,7 +27,6 @@ func ReadIntsFromFile(filename string) ([][]int, error) {
 
 	var reports [][]int
 
-	scanner := bufio.NewScanner(file)
 	re := regexp.MustCompile(`\s+`)
 
 	for scanner.Scan() {
