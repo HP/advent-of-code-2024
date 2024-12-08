@@ -18,6 +18,24 @@ func GetFileScanner(filename string) (*bufio.Scanner, *os.File, error) {
 	return bufio.NewScanner(file), file, nil
 }
 
+func ReadLinesFromFile(filename string) ([]string, error) {
+	scanner, file, err := GetFileScanner(filename)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	var lines []string
+	for scanner.Scan() {
+		line := scanner.Text()
+		if line == "" {
+			continue
+		}
+		lines = append(lines, line)
+	}
+	return lines, nil
+}
+
 func ReadIntsFromFile(filename string) ([][]int, error) {
 	scanner, file, err := GetFileScanner(filename)
 	if err != nil {
